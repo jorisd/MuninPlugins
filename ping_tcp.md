@@ -23,3 +23,11 @@ The timeout of the connexion in seconds.
 A warning is launch when the the connection duration is greater than `timeout*2/3`.  
 **default**: 5  
 **eg**: *10*
+
+### env.warning
+
+Enable or disable the warning alert.  
+If set to *no*, no warning alert will be triggered.  
+**default**: yes  
+**eg**: *no*
+

@@ -30,7 +30,13 @@
  * A warning is launch when the the connection duration is greater than `timeout*2/3`.  
  * **default**: 5  
  * **eg**: *10*
+ *
+ * ### env.warning
  * 
+ * Enable or disable the warning alert.  
+ * If set to *no*, no warning alert will be triggered.  
+ * **default**: yes  
+ * **eg**: *no*
  *
  * Find more information on http://blog.potsky.com/yum-plugin-to-ping-tcp-ports/
  *
@@ -44,10 +50,11 @@ $title   = @getenv('title');
 $url     = @getenv('url');
 $port    = @getenv('port');
 $timeout = @(int)getenv('timeout');
+$warning = @getenv('warning');
 
 $title   = ($title=='') ? array_pop(preg_split('/_/',$argv[0])) : $title;
 $timeout = ($timeout==0) ? 5 : $timeout;
-$warning = ceil(($timeout*2/3)*1000);
+$warning = ($warning=='no') ? false : ceil(($timeout*2/3)*1000);
 
 function report() {
     global $title,$url,$port,$timeout;
@@ -91,7 +98,7 @@ function config() {
     echo "graph_info The ping graph for an address shows if the service is accessible or not.\n";
     echo "graph_vlabel ms\n";
     echo "ping.label ping\n";
-    echo "ping.warning 1:$warning\n";
+    echo ($warning===false) ? '' : "ping.warning 1:$warning\n";
     echo "ping.critical 1:\n";
     echo "ping.info Time in milliseconds to ping the requested service, 0 if not reachable.\n";
 }

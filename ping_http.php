@@ -56,7 +56,13 @@
  * **default**: 5  
  * **eg**: *10*
  * 
- *
+ * ### env.warning
+ * 
+ * Enable or disable the warning alert.  
+ * If set to *no*, no warning alert will be triggered.  
+ * **default**: yes  
+ * **eg**: *no*
+ * 
  * Find more information on http://blog.potsky.com/yum-plugin-to-ping-http-websites/
  *
  * @author    Potsky
@@ -72,10 +78,11 @@ $url     = @getenv('url');
 $type    = @getenv('type');
 $value   = @getenv('value');
 $timeout = @(int)getenv('timeout');
+$warning = @getenv('warning');
 
 $title   = ($title=='') ? array_pop(preg_split('/_/',$argv[0])) : $title;
 $timeout = ($timeout==0) ? 5 : $timeout;
-$warning = ceil(($timeout*2/3)*1000);
+$warning = ($warning=='no') ? false : ceil(($timeout*2/3)*1000);
 
 function report() {
     global $title,$url,$type,$value,$timeout;
@@ -156,7 +163,7 @@ function config() {
     else {
         echo "graph_vlabel ms\n";
         echo "ping.label ping\n";
-        echo "ping.warning 1:$warning\n";
+        echo ($warning===false) ? '' : "ping.warning 1:$warning\n";
         echo "ping.critical 1:\n";
         echo "ping.info Time in milliseconds to get the requested service, 0 if not reachable.\n";
     }
