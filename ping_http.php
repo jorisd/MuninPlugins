@@ -139,8 +139,7 @@ function autoconf() {
 }
 
 function get_friendly_name($url) {
-    $pos = strpos($url,'/');
-    return ($pos===false) ? $url : substr($url,0,$pos);
+   return (preg_match('@(https{0,1}://[^/]+)@i', $url,$matches)) ? $matches[1] : $url;
 }
 
 function config() {
