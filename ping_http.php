@@ -104,14 +104,14 @@ function report() {
 
         if ($type=='match') {
             if (strpos($c,$value)===false) {
-                echo $name.".value 0\n";
+                echo "url".$name.".value 0\n";
             }
             else {
-                echo $name.".value $time\n";
+                echo "url".$name.".value $time\n";
             }
         }
         else {
-            echo $name.".value ".strlen($c)."\n";
+            echo "url".$name.".value ".strlen($c)."\n";
         }
     }
 }
@@ -166,25 +166,25 @@ function config() {
     foreach ($urls as $name=>$url) {
 
         if ($type=='size') {
-            echo $name.".label ".get_friendly_name($url)."\n";
-            echo $name.".critical $value:$value\n";
-            echo $name.".info Size in Bytes of the requested service, 0 if not reachable.\n";
+            echo "url".$name.".label ".get_friendly_name($url)."\n";
+            echo "url".$name.".critical $value:$value\n";
+            echo "url".$name.".info Size in Bytes of the requested service, 0 if not reachable.\n";
         }
         else if ($type=='sizegt') {
-            echo $name.".label ".get_friendly_name($url)."\n";
-            echo $name.".critical $value:\n";
-            echo $name.".info Size in Bytes of the requested service, 0 if not reachable.\n";
+            echo "url".$name.".label ".get_friendly_name($url)."\n";
+            echo "url".$name.".critical $value:\n";
+            echo "url".$name.".info Size in Bytes of the requested service, 0 if not reachable.\n";
         }
         else if ($type=='sizelt') {
-            echo $name.".label ".get_friendly_name($url)."\n";
-            echo $name.".critical 0:$value\n";
-            echo $name.".info Size in Bytes of the requested service, 0 if not reachable.\n";
+            echo "url".$name.".label ".get_friendly_name($url)."\n";
+            echo "url".$name.".critical 0:$value\n";
+            echo "url".$name.".info Size in Bytes of the requested service, 0 if not reachable.\n";
         }
         else {
-            echo $name.".label ".get_friendly_name($url)."\n";
-            echo ($warning===false) ? '' : $name.".warning 1:$warning\n";
-            echo $name.".critical 1:\n";
-            echo $name.".info Time in milliseconds to get the requested service, 0 if not reachable.\n";
+            echo "url".$name.".label ".get_friendly_name($url)."\n";
+            echo "url".($warning===false) ? '' : "url".$name.".warning 1:$warning\n";
+            echo "url".$name.".critical 1:\n";
+            echo "url".$name.".info Time in milliseconds to get the requested service, 0 if not reachable.\n";
         }
     }
 }
