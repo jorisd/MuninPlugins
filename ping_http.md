@@ -4,8 +4,8 @@ Munin parameters
 
 ### env.url (mandatory)
 
-The url to ping in http or https.  
-**eg**: *https://blog.potsky.com*
+The url to ping in http or https. Use space to put several urls.  
+**eg**: *https://blog.potsky.com http://blog.potsky.com*
 
 ### env.type (mandatory)
 

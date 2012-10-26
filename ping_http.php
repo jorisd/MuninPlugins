@@ -11,8 +11,8 @@
  * 
  * ### env.url (mandatory)
  * 
- * The url to ping in http or https.  
- * **eg**: *https://blog.potsky.com*
+ * The url to ping in http or https. Use space to put several urls.  
+ * **eg**: *https://blog.potsky.com http://blog.potsky.com*
  * 
  * ### env.type (mandatory)
  * 
@@ -87,28 +87,32 @@ $warning = ($warning=='no') ? false : ceil(($timeout*2/3)*1000);
 function report() {
     global $title,$url,$type,$value,$timeout;
 
-    $timestart = microtime(true);
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL,$url);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 1);
-    curl_setopt($ch, CURLOPT_SSLVERSION, 3);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
-    $c = curl_exec($ch);
-    curl_close($ch);
-    $time      = ceil((microtime(true)-$timestart)*1000);
+    $urls = explode(' ',$url);
+    foreach ($urls as $name=>$url) {
 
-    if ($type=='match') {
-        if (strpos($c,$value)===false) {
-            echo "ping.value 0\n";
+        $timestart = microtime(true);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL,$url);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 1);
+        curl_setopt($ch, CURLOPT_SSLVERSION, 3);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
+        $c = curl_exec($ch);
+        curl_close($ch);
+        $time      = ceil((microtime(true)-$timestart)*1000);
+
+        if ($type=='match') {
+            if (strpos($c,$value)===false) {
+                echo $name.".value 0\n";
+            }
+            else {
+                echo $name.".value $time\n";
+            }
         }
         else {
-            echo "ping.value $time\n";
+            echo $name.".value ".strlen($c)."\n";
         }
-    }
-    else {
-        echo "ping.value ".strlen($c)."\n";
     }
 }
 
@@ -134,6 +138,10 @@ function autoconf() {
     echo "yes\n";
 }
 
+function get_friendly_name($url) {
+    $pos = strpos($url,'/');
+    return ($pos===false) ? $url : substr($url,0,$pos);
+}
 
 function config() {
     global $title,$url,$type,$value,$warning;
@@ -142,30 +150,34 @@ function config() {
     echo "graph_category services\n";
     echo "graph yes\n";
 
-    if ($type=='size') {
-        echo "graph_vlabel Bytes\n";
-        echo "ping.label size\n";
-        echo "ping.critical $value:$value\n";
-        echo "ping.info Size in Bytes of the requested service, 0 if not reachable.\n";
-    }
-    else if ($type=='sizegt') {
-        echo "graph_vlabel Bytes\n";
-        echo "ping.label size\n";
-        echo "ping.critical $value:\n";
-        echo "ping.info Size in Bytes of the requested service, 0 if not reachable.\n";
-    }
-    else if ($type=='sizelt') {
-        echo "graph_vlabel Bytes\n";
-        echo "ping.label size\n";
-        echo "ping.critical 0:$value\n";
-        echo "ping.info Size in Bytes of the requested service, 0 if not reachable.\n";
-    }
-    else {
-        echo "graph_vlabel ms\n";
-        echo "ping.label ping\n";
-        echo ($warning===false) ? '' : "ping.warning 1:$warning\n";
-        echo "ping.critical 1:\n";
-        echo "ping.info Time in milliseconds to get the requested service, 0 if not reachable.\n";
+    $urls = explode(' ',$url);
+    foreach ($urls as $name=>$url) {
+
+        if ($type=='size') {
+            echo "graph_vlabel Bytes\n";
+            echo $name.".label ".get_friendly_name($url)."\n";
+            echo $name.".critical $value:$value\n";
+            echo $name.".info Size in Bytes of the requested service, 0 if not reachable.\n";
+        }
+        else if ($type=='sizegt') {
+            echo "graph_vlabel Bytes\n";
+            echo $name.".label ".get_friendly_name($url)."\n";
+            echo $name.".critical $value:\n";
+            echo $name.".info Size in Bytes of the requested service, 0 if not reachable.\n";
+        }
+        else if ($type=='sizelt') {
+            echo "graph_vlabel Bytes\n";
+            echo $name.".label ".get_friendly_name($url)."\n";
+            echo $name.".critical 0:$value\n";
+            echo $name.".info Size in Bytes of the requested service, 0 if not reachable.\n";
+        }
+        else {
+            echo "graph_vlabel ms\n";
+            echo $name.".label ".get_friendly_name($url)."\n";
+            echo ($warning===false) ? '' : $name.".warning 1:$warning\n";
+            echo $name.".critical 1:\n";
+            echo $name.".info Time in milliseconds to get the requested service, 0 if not reachable.\n";
+        }
     }
 }
 
