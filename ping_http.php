@@ -11,8 +11,8 @@
  * 
  * ### env.url (mandatory)
  * 
- * The url to ping in http or https. Use space to put several urls.  
- * **eg**: *https://blog.potsky.com http://blog.potsky.com*
+ * The url to ping in http or https.  
+ * **eg**: *https://blog.potsky.com*
  * 
  * ### env.type (mandatory)
  * 
@@ -149,29 +149,38 @@ function config() {
     echo "graph_category services\n";
     echo "graph yes\n";
 
+    if ($type=='size') {
+        echo "graph_vlabel Bytes\n";
+    }
+    else if ($type=='sizegt') {
+        echo "graph_vlabel Bytes\n";
+    }
+    else if ($type=='sizelt') {
+        echo "graph_vlabel Bytes\n";
+    }
+    else {
+        echo "graph_vlabel ms\n";
+    }
+
     $urls = explode(' ',$url);
     foreach ($urls as $name=>$url) {
 
         if ($type=='size') {
-            echo "graph_vlabel Bytes\n";
             echo $name.".label ".get_friendly_name($url)."\n";
             echo $name.".critical $value:$value\n";
             echo $name.".info Size in Bytes of the requested service, 0 if not reachable.\n";
         }
         else if ($type=='sizegt') {
-            echo "graph_vlabel Bytes\n";
             echo $name.".label ".get_friendly_name($url)."\n";
             echo $name.".critical $value:\n";
             echo $name.".info Size in Bytes of the requested service, 0 if not reachable.\n";
         }
         else if ($type=='sizelt') {
-            echo "graph_vlabel Bytes\n";
             echo $name.".label ".get_friendly_name($url)."\n";
             echo $name.".critical 0:$value\n";
             echo $name.".info Size in Bytes of the requested service, 0 if not reachable.\n";
         }
         else {
-            echo "graph_vlabel ms\n";
             echo $name.".label ".get_friendly_name($url)."\n";
             echo ($warning===false) ? '' : $name.".warning 1:$warning\n";
             echo $name.".critical 1:\n";
