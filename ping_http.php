@@ -1,75 +1,27 @@
 #!/usr/bin/php
 <?php
+/**
+ * MuninPlugins
+ *
+ * Copyright © 2009-2012 Raphael Barbate (potsky) <potsky@me.com> [http://www.potsky.com]
+ *
+ * This file is part of MuninPlugins.
+ *
+ * MuninPlugins is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License.
+ *
+ * MuninPlugins is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with MuninPlugins.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #%# family=auto
 #%# capabilities=autoconf
-/**
- * Plugin to monitor websites, based on a keyword or size
- *
- * 
- * Munin parameters
- * -----------
- * 
- * ### env.url (mandatory)
- * 
- * The url to ping in http or https.  
- * **eg**: *https://blog.potsky.com*
- * 
- * ### env.type (mandatory)
- * 
- * Several values are available :
- * 
- * * **match** : to match a specific word in the web page  
- * The returned value is the number of milliseconds to download the page or 0 if not available  
- * A critical alarm is launched if value is not equal to *env.value*
- * 
- * * **size** : to test the web page size in bytes  
- * The returned value  is the number of bytes of the page 0 if not available  
- * A critical alarm is launched if value is not equal to *env.value*
- * 
- * * **sizegt** : to test if the web page size is greater than a value in bytes  
- * The returned value  is the number of bytes of the page 0 if not available  
- * A critical alarm is launched if value is not greater than *env.value*
- * 
- * * **sizelt** : to test if the web page size is lower than a value in bytes  
- * The returned value  is the number of bytes of the page 0 if not available  
- * A critical alarm is launched if value is not lower than *env.value*
- * 
- * ### env.value (mandatory)
- * 
- * The value corresponding to the test.
- * 
- * * **eg if type is _match_** : *Potsky*
- * * **eg if type is _size_** :  *17324*
- * * **eg if type is _sizegt_** : *100*
- * * **eg if type is _sizelt_** : *20000*
- * 
- * ### env.title
- * 
- * The title of the graph.  
- * **default**: the right part next to character _ of the plugin name.  
- * **eg**: *Potsky Blog*
- * 
- * ### env.timeout
- * 
- * The timeout of the connexion in seconds.  
- * A warning is launch when the the connection duration is greater than `timeout*2/3`.  
- * **default**: 5  
- * **eg**: *10*
- * 
- * ### env.warning
- * 
- * Enable or disable the warning alert.  
- * If set to *no*, no warning alert will be triggered.  
- * **default**: yes  
- * **eg**: *no*
- * 
- * Find more information on http://blog.potsky.com/yum-plugin-to-ping-http-websites/
- *
- * @author    Potsky
- * @copyright 2012
- * @version   1.0.0
- * @licence   GPLv2
- */
 
 $types   = array("match","size","sizegt","sizelt");
 

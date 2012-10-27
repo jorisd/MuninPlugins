@@ -1,50 +1,27 @@
 #!/usr/bin/php
 <?php
+/**
+ * MuninPlugins
+ *
+ * Copyright © 2009-2012 Raphael Barbate (potsky) <potsky@me.com> [http://www.potsky.com]
+ *
+ * This file is part of MuninPlugins.
+ *
+ * MuninPlugins is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License.
+ *
+ * MuninPlugins is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with MuninPlugins.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #%# family=auto
 #%# capabilities=autoconf
-/**
- * Plugin to monitor services reachable via TCP
- *
- * Munin parameters
- * -----------
- * 
- * ### env.url (mandatory)
- * 
- * The url to ping with a TCP socket.  
- * **eg**: *blog.potsky.com*
- * 
- * ### env.port (mandatory)
- * 
- * The port of the TCP socket.  
- * **eg**: *22*
- * 
- * ### env.title
- * 
- * The title of the graph.  
- * **default**: the right part next to character _ of the plugin name.  
- * **eg**: *Potsky Blog SSH*
- * 
- * ### env.timeout
- * 
- * The timeout of the connexion in seconds.  
- * A warning is launch when the the connection duration is greater than `timeout*2/3`.  
- * **default**: 5  
- * **eg**: *10*
- *
- * ### env.warning
- * 
- * Enable or disable the warning alert.  
- * If set to *no*, no warning alert will be triggered.  
- * **default**: yes  
- * **eg**: *no*
- *
- * Find more information on http://blog.potsky.com/yum-plugin-to-ping-tcp-ports/
- *
- * @author    Potsky
- * @copyright 2012
- * @version   1.0.0
- * @licence   GPLv2
- */
 
 $title   = @getenv('title');
 $url     = @getenv('url');
